@@ -4,7 +4,7 @@ services:
     name: sanola-backend
     runtime: node
     plan: free
-    buildCommand: npm install && npx prisma generate && npx prisma migrate deploy || npx prisma migrate resolve --applied baseline || true
+    buildCommand: npm install && npx prisma generate
     startCommand: npm run start
     envVars:
       - key: NODE_ENV
