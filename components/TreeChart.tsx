@@ -53,11 +53,11 @@ const TreeChart: React.FC<TreeChartProps> = ({ data, onNodeClick }) => {
 
     // Create explicit layers to control Z-Index (Painter's Algorithm)
     // 1. Marriage Links (Bottom)
-    const marriageLayer = g.append('g').attr('class', 'layer-marriage');
+    const marriageLayer = g.append('g').attr('class', 'layer-marriage').style('pointer-events', 'none');
     // 2. Tree Links
-    const linkLayer = g.append('g').attr('class', 'layer-links');
+    const linkLayer = g.append('g').attr('class', 'layer-links').style('pointer-events', 'none');
     // 3. Nodes (Top)
-    const nodeLayer = g.append('g').attr('class', 'layer-nodes');
+    const nodeLayer = g.append('g').attr('class', 'layer-nodes').style('pointer-events', 'all');
 
     const zoom = d3.zoom<SVGSVGElement, unknown>()
         .scaleExtent([0.1, 4])
@@ -179,6 +179,8 @@ const TreeChart: React.FC<TreeChartProps> = ({ data, onNodeClick }) => {
         const nodeEnter = node.enter().append('g')
             .attr('class', 'node')
             .attr('transform', (d) => `translate(${source.x0 || 0},${source.y0 || 0})`)
+            .style('pointer-events', 'all')
+            .style('cursor', 'pointer')
             .on('click', (event, d) => {
                 event.stopPropagation();
                 if (d.children) {
@@ -206,7 +208,8 @@ const TreeChart: React.FC<TreeChartProps> = ({ data, onNodeClick }) => {
                  if (d.data.relationship === 'spouse') return '#917622';
                  return d._children ? '#163c2c' : '#78716c';
             })
-            .style('stroke-width', '2px');
+            .style('stroke-width', '2px')
+            .style('pointer-events', 'all');
 
         const contentGroup = nodeEnter.append('g').attr('class', 'node-content');
 
@@ -318,7 +321,7 @@ const TreeChart: React.FC<TreeChartProps> = ({ data, onNodeClick }) => {
 
   return (
     <div ref={containerRef} className="w-full h-full min-h-[600px] bg-white relative overflow-hidden rounded-xl border border-slate-200 shadow-inner">
-      <svg ref={svgRef} className="w-full h-full cursor-grab active:cursor-grabbing"></svg>
+      <svg ref={svgRef} className="w-full h-full cursor-grab active:cursor-grabbing" style={{ pointerEvents: 'all' }}></svg>
       <div className="absolute bottom-2 sm:bottom-4 right-2 sm:right-4 bg-white/90 rounded-lg shadow-xl text-[10px] sm:text-xs text-slate-500 border border-cream-200 backdrop-blur-sm max-w-[140px] sm:max-w-none overflow-hidden">
         <button
           onClick={() => setLegendExpanded(!legendExpanded)}

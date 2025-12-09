@@ -308,7 +308,7 @@ const App: React.FC = () => {
                         <h2 className="text-2xl sm:text-3xl font-serif font-bold text-slate-900">Family Tree</h2>
                         <p className="text-sm sm:text-base text-slate-600 font-sans">Explore the branches of the Sidafa Sano lineage.</p>
                     </div>
-                    <div className="flex-1 bg-white/80 backdrop-blur-md rounded-xl sm:rounded-2xl shadow-2xl border border-slate-200/70 p-1 sm:p-2 overflow-hidden">
+                    <div className="flex-1 bg-white/80 backdrop-blur-md rounded-xl sm:rounded-2xl shadow-2xl border border-slate-200/70 p-1 sm:p-2 overflow-hidden relative">
                         <TreeChart data={data} onNodeClick={setSelectedMember} />
                     </div>
                 </div>
