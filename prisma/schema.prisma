@@ -1,0 +1,40 @@
+// prisma/schema.prisma
+datasource db {
+  provider  = "postgresql"
+  url  	    = env("DATABASE_URL")
+  // uncomment next line if you use Prisma <5.10
+  // directUrl = env("DATABASE_URL_UNPOOLED")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Member {
+  id          String   @id @default(uuid())
+  name        String
+  gender      String   // 'male' | 'female'
+  relationship String? // 'root' | 'spouse' | 'child'
+  birthYear   Int?
+  deathYear   Int?
+  photoUrl    String?
+  spouseName  String?
+  spouseId    String?  @unique
+  motherName  String?
+  location    String?
+  
+  // Self-referential relationship for parent-child
+  parentId    String?
+  parent      Member?  @relation("ParentChild", fields: [parentId], references: [id], onDelete: Cascade)
+  children    Member[] @relation("ParentChild")
+  
+  // Spouse relationship (self-referential - both sides)
+  spouse      Member?  @relation("SpouseRelation", fields: [spouseId], references: [id])
+  spouseOf    Member?  @relation("SpouseRelation")
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([parentId])
+  @@index([spouseId])
+}
